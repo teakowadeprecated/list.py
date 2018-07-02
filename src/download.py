@@ -1,20 +1,26 @@
 import json
-import os
-
+import filecmp
 import requests
-
-from src import hashfile
 
 r = requests.get('https://steamapi.addones.org/ISteamApps/GetAppList/v2')
 
 parsed = json.dumps(r.json()['applist']['apps'])
 
-fileObject = open('./list/applist.json', 'w')
-fileObject.write(parsed)
+# New applist.cache we need check version
 
-script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, './list/applist.json')
+cacheObject = open('./list/applist.cache', 'w')
+cacheObject.write(parsed)
+cacheObject.close()
 
-fileObject = open('./list/applist.lock', 'wb')
-fileObject.write(hashfile.SHA1(file_path))
-fileObject.close()
+checkDiff = filecmp.cmp('./list/applist.json', './list/applist.cache')
+
+if checkDiff:
+    print('Already up to date.')
+else:
+    # Update applist.json 
+    print('Writing objects...')
+    fileObject = open('./list/applist.json', 'w')
+    fileObject.write(parsed)
+    fileObject.close()
+    print('Everything up to date')
+
