@@ -7,14 +7,12 @@ import mysql.connector
 config = configparser.ConfigParser()
 config.read('../config.conf')
 
-script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, './list/applist.json')
+file_path = os.path.join(os.path.dirname(__file__), './list/applist.json')
 
 with open(file_path) as f:
     parsed = json.load(f)
 
-conn = mysql.connector.connect(host=config.get("DB", "host"), user=config.get("DB", "user"),
-                               password=config.get("DB", "password"), database=config.get("DB", "database"))
+conn = mysql.connector.connect(host=config.get("DB", "host"), user=config.get("DB", "user"),password=config.get("DB", "password"), database=config.get("DB", "database"))
 cursor = conn.cursor()
 cursor.execute("SET names 'utf8mb4'");
 
