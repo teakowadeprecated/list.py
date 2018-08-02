@@ -2,6 +2,8 @@
 
 A Steam App List Update Script 
 
+![](https://img.shields.io/badge/python-%3E%3D3-blue.svg)
+
 ## Run
 
 ```bash
