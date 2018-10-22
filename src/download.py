@@ -40,21 +40,11 @@ else:
                 keys.append(key)
 
     f = codecs.open(listSQL, 'w+', 'utf-8')
-    insert = """INSERT INTO `applist` (`{0}`) VALUES""".format("`, `".join(map(lambda key: "{0}".format(key), keys)))
-
-    f.write(insert)
-    f.write('\n')
 
     for row in data:
-        writeData = """    ({0}),""".format(
-            ",".join(
-                map(
-                    lambda key: "`{0}`".format(row[key]) if key in row else "NULL", keys
-                )
-            )
-        )
-        f.writelines(writeData)
+        insert = """INSERT INTO `applist` ({0})""".format(
+            ", ".join(map(lambda key: "`{0}`".format(row[key]) if key in row else "NULL", keys)))
+
+        f.writelines(insert)
         f.write('\n')
     print('Everything up to date')
-
-

@@ -1,7 +1,6 @@
 import configparser
 import json
 import os
-
 import mysql.connector
 
 config = configparser.ConfigParser()
@@ -26,8 +25,11 @@ result = [(item.get('appid', 'NA'), item.get('name', 'NA')) for item in parsed]
 
 if count < appscount:
 
+    print('Updating...')
     for app in result:
         insert_applist = "replace into apps(AppID, Name) VALUES (%s,%s)"
         cursor.execute(insert_applist, app)
-        conn.commit()
-        # cursor.close()
+        conn.commit()    
+    cursor.close()
+    print('Everything up to date')
+
